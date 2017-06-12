@@ -1,0 +1,11 @@
+% (C) Timo Karkkainen 2017
+% Helper-function. low = lowest point of y-axis visible, high = highest.
+% Makes the plot more human-readable.
+function Beautify(showLegend,low, high, fontsize)
+set(gca,'FontSize',fontsize);
+xlabel('m_1 (eV)','FontSize',fontsize);
+title('M_{\Delta}/|\lambda_{\phi}| as a function of the lightest neutrino','FontSize',fontsize);
+ylim([low high]);
+if(showLegend)
+    legend('{\fontsize{15}ee}','{\fontsize{15}e\mu}','{\fontsize{15}e\tau}','{\fontsize{15}\mu\mu}','{\fontsize{15}\mu\tau}','{\fontsize{15}\tau\tau}','Location','NorthEast');
+end
