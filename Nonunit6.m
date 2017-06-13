@@ -9,7 +9,7 @@ counter=1;          % See the progress     (DON'T TOUCH!)
 y_upper = 16;       % Upper limit of y-axis
 y_lower = 10;       % Lower limit of y-axis
 fs = 20;            % Font size of title and axes
-nh = true;          % Normal hierarchy
+nh = false;         % Normal hierarchy
 ih = not(nh);       % Inverse hierarchy    (DON'T TOUCH!)
 s23Fix = false;     % If true, set best-fit value for s23
 deltaFix = false;   % likewise for deltaCP
@@ -85,7 +85,7 @@ fprintf('%d/18 (%.2f seconds elapsed)\n',counter, cputime-t); counter = counter+
 fprintf('%d/18 (%.2f seconds elapsed)\n',counter, cputime-t); counter = counter+1;
 
 % Beautifying the plots (showLegend, yMin, yMax, fontSize)
-Beautify(true,y_lower,y_upper,20);
+Beautify(true,y_lower,y_upper,fs);
 ylabel('log_{10}(M_{\Delta}/|\lambda_{\phi}|)','FontSize',fs);
 text(0.01,15,'Our limit (Preliminary)','FontSize',fs)
 %hold off;
@@ -161,8 +161,8 @@ area(m1range,log10(minValuesTot),'FaceColor', 'c');
 area(m1range,log10(minValuesNonUnit),'FaceColor','r');
 Beautify(false,y_lower,y_upper,20);
 ylabel('log_{10}(M_{\Delta}/|\lambda_{\phi}|)','FontSize',fs);
-text(0.08,15.5,'Excluded','FontSize',fs)
-text(0.08,14.5,'Accessible by DUNE','FontSize',fs)
-text(0.08,13.6,'NSI not from nonunitarity','FontSize',fs-5)
+text(0.08,15.0,'Excluded','FontSize',fs)
+text(0.08,13.1,'Accessible by DUNE','FontSize',fs)
+text(0.08,12.4,'NSI not from nonunitarity','FontSize',fs-5)
 text(0.08,11,'Nonunitarity','FontSize',fs)
 hold off;

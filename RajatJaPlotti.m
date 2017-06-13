@@ -7,6 +7,13 @@
 % 
 % NOTE: s23range and deltarange can be single-valued too.
 function [p, minValues] = RajatJaPlotti(alpha,beta,m1range,s23range,deltarange,eps,D,minValues,nh)
+% Electron number density of Earth: 10^-30 m^-3 in natural units
+% Note: 1/GeV = 0.197e-15 m and 1 m = 5076142.13198 eV
+ne = 7.645e-18*1.0e27;  % In eV^3
+Gf = 1.1664e-5*1.0e-18; % Fermi constant in eV^-2
+Enu = 5.0e9; 		    % Neutrino energy in eV
+A = 2*sqrt(2)*Gf*Enu*ne;% Matter density potential of electrons
+
 e = 1;
 m21 = 7.5e-5;           
 s12 = sqrt(0.306);
@@ -27,12 +34,12 @@ for m1 = m1range
     else
         m3 = sqrt(m31 + m1^2);    m2 = sqrt(m3^2 - m21); % INVERSE HIERARCHY
     end
-    mD = diag([m1 m2 m3]);
+    mD2 = diag([m1^2 m2^2 m3^2]); % Diafgonal mass matrix squared
     for s23 = s23range
         for delta = deltarange
             U = GenerateMixingMatrix(s12,s13,s23,delta);
             Udag = ctranspose(U);
-            mnu = Udag*mD*U;
+            mnu = sqrt(U*mD2*Udag + eye(3)*A);
             mnudag = ctranspose(mnu);
             result = sqrt(eps(alpha,beta)*8*sqrt(2)*Gf*v^4/(mnu(e,beta)*mnudag(alpha,e)));
             result = abs(result); % Maps the complex number to its absolute value
