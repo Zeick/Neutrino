@@ -11,10 +11,10 @@ function [p, minValues] = RajatJaPlotti(alpha,beta,m1range,s23range,deltarange,e
 % Note: 1/GeV = 0.197e-15 m and 1 m = 5076142.13198 eV
 ne = 7.645e-18*1.0e27;  % In eV^3
 Gf = 1.1664e-5*1.0e-18; % Fermi constant in eV^-2
-Enu = 5.0e9; 		    % Neutrino energy in eV
+Enu = 2.0e9; 		    % Neutrino energy in eV
 A = 2*sqrt(2)*Gf*Enu*ne;% Matter density potential of electrons
 
-e = 1;
+e = 1; mu = 2;
 m21 = 7.5e-5;           
 s12 = sqrt(0.306);
 if(nh) % Normal hierarchy
@@ -39,10 +39,14 @@ for m1 = m1range
         for delta = deltarange
             U = GenerateMixingMatrix(s12,s13,s23,delta);
             Udag = ctranspose(U);
-            mnu = sqrt(U*mD2*Udag + eye(3)*A);
+            mnu = sqrt(U*mD2*Udag + diag([A 0 0])); % Here MSW effects have been updated 
             mnudag = ctranspose(mnu);
-            result = sqrt(eps(alpha,beta)*8*sqrt(2)*Gf*v^4/(mnu(e,beta)*mnudag(alpha,e)));
-            result = abs(result); % Maps the complex number to its absolute value
+            if(alpha == beta) % Case ee -> ee - mumu; Case tautau -> tautau - mumu
+                result = abs(eps(alpha,alpha) - eps(mu,mu))*8*sqrt(2)*Gf*v^4/abs(mnu(e,alpha)*mnudag(alpha,e) - mnu(e,mu)*mnudag(mu,e));
+            else
+                result = eps(alpha,beta)*8*sqrt(2)*Gf*v^4/abs(mnu(e,beta)*mnudag(alpha,e));
+            end
+            result = sqrt(result);
             D(j,2) = result;
             if(result > minValues(j,2)) % Use '<' for maxValues. Then, also must change initial values.
                 minValues(j,2) = result; 

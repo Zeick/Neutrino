@@ -7,5 +7,5 @@ xlabel('m_1 (eV)','FontSize',fontsize);
 title('M_{\Delta}/|\lambda_{\phi}| as a function of the lightest neutrino','FontSize',fontsize);
 ylim([low high]);
 if(showLegend)
-    legend('{\fontsize{15}ee}','{\fontsize{15}e\mu}','{\fontsize{15}e\tau}','{\fontsize{15}\mu\mu}','{\fontsize{15}\mu\tau}','{\fontsize{15}\tau\tau}','Location','NorthEast');
+    legend('{\fontsize{15}ee-\mu\mu}','{\fontsize{15}e\mu}','{\fontsize{15}e\tau}','{\fontsize{15}\mu\tau}','{\fontsize{15}\tau\tau -\mu\mu}','Location','NorthEast');
 end
