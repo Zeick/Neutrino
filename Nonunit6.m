@@ -10,7 +10,7 @@ stages=15;          %
 y_upper = 16;       % Upper limit of y-axis
 y_lower = 10;       % Lower limit of y-axis
 fs = 20;            % Font size of title and axes
-nh = true;         % Normal hierarchy
+nh = true;          % Normal hierarchy (false -> inverse hierarchy)
 ih = not(nh);       % Inverse hierarchy    (DON'T TOUCH!)
 s23Fix = false;     % If true, set best-fit value for s23
 deltaFix = false;   % likewise for deltaCP
@@ -23,6 +23,9 @@ tau = 3;
 %%%%%%%%%%%%%%%%%%
 % SET PARAMETERS %
 %%%%%%%%%%%%%%%%%%
+m1range = 0.0:0.002:0.20;   % Lightest neutrino mass range
+%initialMin = 16*ones(1,length(m1range));
+initialMin = zeros(1,length(m1range));
 
 % Values from 0907.0097 (Blennow-Fernandez-Martinez) Model-independent NSI
 eps_ee_max = 4.2;      eps_emu_max = 0.5*0.33;   eps_etau_max = 0.5*3.0;
@@ -45,8 +48,6 @@ eps = [[eps_ee_max         eps_emu_max         eps_etau_max];
        [conj(eps_emu_max)  eps_mumu_max        eps_mutau_max];
        [conj(eps_etau_max) conj(eps_mutau_max) eps_tautau_max]];
 
-m1range = 0.0:0.002:0.20;   % Lightest neutrino mass range
-
 % Check s23 and deltaCP fixing. If fixed, best-fit. Hierarchy-dependent.
 if s23Fix
    if nh
@@ -65,109 +66,114 @@ end
 
 D=zeros(length(m1range),2);
 D(:,1) = m1range;
-minValues=[m1range' zeros(length(m1range),1)];
+%minValues=[m1range' zeros(length(m1range),1)];
+minValues=initialMin;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PLOT FOR LBNO/DUNE DATA %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 figure;
 subplot(2,2,1);
-[p_ee, minValues] = RajatJaPlotti(e,e,m1range,s23range,deltarange,eps,D,minValues,ih);
+ee_dune = RajatJaPlotti(e,e,m1range,s23range,deltarange,eps,D,ih);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
 hold on;
-[p_emu, minValues] = RajatJaPlotti(e,mu,m1range,s23range,deltarange,eps,D,minValues,ih);
+emu_dune = RajatJaPlotti(e,mu,m1range,s23range,deltarange,eps,D,ih);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-[p_etau, minValues] = RajatJaPlotti(e,tau,m1range,s23range,deltarange,eps,D,minValues,ih);
+etau_dune = RajatJaPlotti(e,tau,m1range,s23range,deltarange,eps,D,ih);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-%[p_mumu, minValues] = RajatJaPlotti(mu,mu,m1range,s23range,deltarange,eps,D,minValues,ih);
-%fprintf('%d/18 (%.2f seconds elapsed)\n',counter, cputime-t); counter = counter+1;
-[p_mutau, minValues] = RajatJaPlotti(mu,tau,m1range,s23range,deltarange,eps,D,minValues,ih);
+mutau_dune = RajatJaPlotti(mu,tau,m1range,s23range,deltarange,eps,D,ih);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-[p_tautau, minValues] = RajatJaPlotti(tau,tau,m1range,s23range,deltarange,eps,D,minValues,ih);
+tautau_dune = RajatJaPlotti(tau,tau,m1range,s23range,deltarange,eps,D,ih);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
 
 % Beautifying the plots (showLegend, yMin, yMax, fontSize)
 Beautify(true,y_lower,y_upper,fs);
-ylabel('log_{10}(M_{\Delta}/|\lambda_{\phi}|)','FontSize',fs);
 text(0.01,15,'Our limit (Preliminary)','FontSize',fs)
-%hold off;
+hold off;
 
-minValuesTot = minValues(:,2);
+minValues = FindMin(minValues,ee_dune);
+minValues = FindMin(minValues,emu_dune);
+minValues = FindMin(minValues,etau_dune);
+minValues = FindMin(minValues,mutau_dune);
+minValues = FindMin(minValues,tautau_dune);
+%subplot(2,2,2);
+%plot(m1range, minValues);
+minValuesDune = minValues;
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PLOT FOR MAXIMAL NON-UNITARY DATA %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-minValues=[m1range' zeros(length(m1range),1)];
+minValues=initialMin;
 
 % figure;
 subplot(2,2,2);
-[p_ee_nonunit, minValues] = RajatJaPlotti(e,e,m1range,s23range,deltarange,eps_nonunit,D,minValues,ih);
+ee_nonunit = RajatJaPlotti(e,e,m1range,s23range,deltarange,eps_nonunit,D,ih);
+fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
 hold on;
+emu_nonunit = RajatJaPlotti(e,mu,m1range,s23range,deltarange,eps_nonunit,D,ih);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-[p_emu_nonunit, minValues] = RajatJaPlotti(e,mu,m1range,s23range,deltarange,eps_nonunit,D,minValues,ih);
+etau_nonunit = RajatJaPlotti(e,tau,m1range,s23range,deltarange,eps_nonunit,D,ih);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-[p_etau_nonunit, minValues] = RajatJaPlotti(e,tau,m1range,s23range,deltarange,eps_nonunit,D,minValues,ih);
+mutau_nonunit = RajatJaPlotti(mu,tau,m1range,s23range,deltarange,eps_nonunit,D,ih);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-%[p_mumu, minValues] = RajatJaPlotti(mu,mu,m1range,s23range,deltarange,eps_nonunit,D,minValues,ih);
-%fprintf('%d/18 (%.2f seconds elapsed)\n',counter, cputime-t); counter = counter+1;
-[p_mutau_nonunit, minValues] = RajatJaPlotti(mu,tau,m1range,s23range,deltarange,eps_nonunit,D,minValues,ih);
-fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-[p_tautau_nonunit, minValues] = RajatJaPlotti(tau,tau,m1range,s23range,deltarange,eps_nonunit,D,minValues,ih);
+tautau_nonunit = RajatJaPlotti(tau,tau,m1range,s23range,deltarange,eps_nonunit,D,ih);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
 
 Beautify(true,y_lower,y_upper,fs);
-ylabel('log_{10}(M_{\Delta}/|\lambda_{\phi}|)','FontSize',fs);
 text(0.01,15,'Non-unitarity limit','FontSize',fs)
-%hold off;
+hold off;
 
-minValuesNonUnit = minValues(:,2);
+minValues = FindMin(minValues,ee_nonunit);
+minValues = FindMin(minValues,emu_nonunit);
+minValues = FindMin(minValues,etau_nonunit);
+minValues = FindMin(minValues,mutau_nonunit);
+minValues = FindMin(minValues,tautau_nonunit);
+minValuesNonunit = minValues;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PLOT FOR CURRENT EXPERIMENTAL DATA %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-minValues=[m1range' zeros(length(m1range),1)];
-
-%figure;
+minValues=initialMin;
 subplot(2,2,3);
-[p_ee_exp, minValues] = RajatJaPlotti(e,e,m1range,s23range,deltarange,eps_exp,D,minValues,ih);
+ee_exp = RajatJaPlotti(e,e,m1range,s23range,deltarange,eps_exp,D,ih);
+fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
 hold on;
+emu_exp = RajatJaPlotti(e,mu,m1range,s23range,deltarange,eps_exp,D,ih);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-[p_emu_exp, minValues] = RajatJaPlotti(e,mu,m1range,s23range,deltarange,eps_exp,D,minValues,ih);
+etau_exp = RajatJaPlotti(e,tau,m1range,s23range,deltarange,eps_exp,D,ih);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-[p_etau_exp, minValues] = RajatJaPlotti(e,tau,m1range,s23range,deltarange,eps_exp,D,minValues,ih);
+mutau_exp = RajatJaPlotti(mu,tau,m1range,s23range,deltarange,eps_exp,D,ih);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-%[p_mumu, minValues] = RajatJaPlotti(mu,mu,m1range,s23range,deltarange,eps_exp,D,minValues,ih);
-%fprintf('%d/18 (%.2f seconds elapsed)\n',counter, cputime-t); counter = counter+1;
-[p_mutau_exp, minValues] = RajatJaPlotti(mu,tau,m1range,s23range,deltarange,eps_exp,D,minValues,ih);
-fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-[p_tautau_exp, minValues] = RajatJaPlotti(tau,tau,m1range,s23range,deltarange,eps_exp,D,minValues,ih);
+tautau_exp = RajatJaPlotti(tau,tau,m1range,s23range,deltarange,eps_exp,D,ih);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
 
 Beautify(true,y_lower,y_upper,fs);
-ylabel('log_{10}(M_{\Delta}/|\lambda_{\phi}|)','FontSize',fs);
-text(0.01,15,'Experimental NSI limit','FontSize',fs)
-%hold off;
+text(0.01,15,'Current experimental limit','FontSize',fs)
+hold off;
 
-minValuesExp = minValues(:,2);
-
+minValues = FindMin(minValues,ee_exp);
+minValues = FindMin(minValues,emu_exp);
+minValues = FindMin(minValues,etau_exp);
+minValues = FindMin(minValues,mutau_exp);
+minValues = FindMin(minValues,tautau_exp);
+minValuesExp = minValues;
 
 %%%%%%%%%%%%%%%%%%%
 % COMBINE RESULTS %
 %%%%%%%%%%%%%%%%%%%
-figure;
+%figure;
 subplot(2,2,4);
 %area(m1range,log10(minValuesExp),'FaceColor','g');
-plot(m1range,log10(minValuesExp),'Color','g');
+plot(m1range,minValuesExp,'Color','g');
 hold on;
 %area(m1range,log10(minValuesTot),'FaceColor', [0.5 0.5 0.5]); % Grey = [0.5 0.5 0.5]
 %area(m1range,log10(minValuesTot),'FaceColor', 'c');
 %area(m1range,log10(minValuesNonUnit),'FaceColor','r');
-plot(m1range,log10(minValuesTot),'Color', 'c');
-plot(m1range,log10(minValuesNonUnit),'Color','r');
+plot(m1range,minValuesDune,'Color', 'b');
+plot(m1range,minValuesNonunit,'Color','r');
 Beautify(false,y_lower,y_upper,20);
-ylabel('log_{10}(M_{\Delta}/|\lambda_{\phi}|)','FontSize',fs);
-%text(0.08,15.0,'Excluded','FontSize',fs)
-%text(0.08,13.1,'Accessible by DUNE','FontSize',fs)
-%text(0.08,12.4,'NSI not from nonunitarity','FontSize',fs-5)
-%text(0.08,11,'Nonunitarity','FontSize',fs)
-legend('{\fontsize{10}Experimental limit}', '{\fontsize{10}DUNE coverage}','{\fontsize{10}Non-unitary limit}','Location','NorthEast');
+text(0.01,15.0,'Excluded','FontSize',fs)
+text(0.01,13.1,'DUNE coverage','FontSize',fs)
+text(0.01,11,'Nonunitarity','FontSize',fs)
+%legend('{\fontsize{10}Experimental limit}', '{\fontsize{10}DUNE coverage}','{\fontsize{10}Non-unitary limit}','Location','NorthEast');
 hold off;

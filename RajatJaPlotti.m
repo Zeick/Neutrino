@@ -6,7 +6,7 @@
 %      matter NSI parameter (alpha, beta).
 % 
 % NOTE: s23range and deltarange can be single-valued too.
-function [p, minValues] = RajatJaPlotti(alpha,beta,m1range,s23range,deltarange,eps,D,minValues,nh)
+function values = RajatJaPlotti(alpha,beta,m1range,s23range,deltarange,eps,D,nh)
 % Electron number density of Earth: 10^-30 m^-3 in natural units
 % Note: 1/GeV = 0.197e-15 m and 1 m = 5076142.13198 eV
 ne = 7.645e-18*1.0e27;  % In eV^3
@@ -48,11 +48,12 @@ for m1 = m1range
             end
             result = sqrt(result);
             D(j,2) = result;
-            if(result > minValues(j,2)) % Use '<' for maxValues. Then, also must change initial values.
-                minValues(j,2) = result; 
-            end
+%            if(result > minValues(j,2)) % Use '<' for maxValues. Then, also must change initial values.
+%                minValues(j,2) = result; 
+%            end
         end
     end
     j=j+1;
 end
-p = plot(D(:,1),log10(D(:,2)));
+values = log10(D(:,2));
+plot(m1range, values);

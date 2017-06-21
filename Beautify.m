@@ -4,6 +4,7 @@
 function Beautify(showLegend,low, high, fontsize)
 set(gca,'FontSize',fontsize);
 xlabel('m_1 (eV)','FontSize',fontsize);
+ylabel('log_{10}(M_{\Delta}/|\lambda_{\phi}|)','FontSize',fontsize);
 title('M_{\Delta}/|\lambda_{\phi}| as a function of the lightest neutrino','FontSize',fontsize);
 ylim([low high]);
 if(showLegend)
