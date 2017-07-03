@@ -11,7 +11,7 @@ stages=8;          %
 y_upper = 14;       % Upper limit of y-axis
 y_lower = 8;       % Lower limit of y-axis
 fs = 20;            % Font size of title and axes
-nh = false;          % Normal hierarchy (false -> inverse hierarchy)
+nh = true;          % Normal hierarchy (false -> inverse hierarchy)
 s23Fix = false;     % If true, set best-fit value for s23
 deltaFix = false;   % likewise for deltaCP
 
