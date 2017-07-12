@@ -44,23 +44,14 @@ for m1 = m1range
         for delta = deltarange
             U = GenerateMixingMatrix(s12,s13,s23,delta);
             Udag = ctranspose(U);
-            
-            % !!!!!!!!
-            % Pit?isik? poistaa matriisineli?juuri ja palata alkiotasolle?
-            % Eli otetaan m^2-matriisista alkio ja vasta alkionottovaiheesa
-            % neli?juuri?
-            % !!!!!!!!!
             mnu2 = U*mD2*Udag + diag([A 0 0]);
             if (alpha == e)
-               mnu2(alpha, beta) = mnu2(alpha, beta) + eps(alpha, beta);
-               if (alpha ~= beta) % For non-diagonal elements only
-                   mnu2(beta, alpha) = mnu2(beta, alpha) + conj(eps(alpha,beta));
+               mnu2(alpha, beta) = mnu2(alpha, beta) + A*eps(alpha, beta);
+               if (alpha ~= beta) % For non-diagonal elements both (alpha,beta) and (beta,alpha)
+                   mnu2(beta, alpha) = mnu2(beta, alpha) + A*conj(eps(alpha,beta));
                end
             end
             mnu2dag = ctranspose(mnu2);
-            
-%            mnu = sqrt(U*mD2*Udag + diag([A 0 0])); % Here MSW effects have been updated 
-%            mnudag = ctranspose(mnu);
             if(alpha == beta) % Case ee -> ee - mumu; Case tautau -> tautau - mumu
                 result = eps(alpha,alpha)*8*sqrt(2)*Gf*v^4/abs(sqrt(mnu2(e,alpha)*mnu2dag(alpha,e)) - sqrt(mnu2(e,mu)*mnu2dag(mu,e)));
             else

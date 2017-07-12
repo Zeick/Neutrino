@@ -177,5 +177,5 @@ Beautify(false,y_lower,y_upper,20);
 %text(0.01,15.0,'Excluded','FontSize',fs)
 %text(0.01,13.1,'DUNE coverage','FontSize',fs)
 %text(0.01,11,'Nonunitarity','FontSize',fs)
-legend('{\fontsize{15}Experimental limit}', '{\fontsize{15}DUNE coverage}','{\fontsize{15}Non-unitary limit}','{\fontsize{15}CFLV limit}','Location','NorthEast');
+legend('{\fontsize{15}Experimental limit}', '{\fontsize{15}DUNE coverage}','{\fontsize{15}Non-unitary limit}','Location','NorthEast');
 %hold off;
