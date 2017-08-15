@@ -1,0 +1,34 @@
+clear;
+fs = 20;
+emuee_nh = load('Data/emuee_nh.mat');
+emuee_ih = load('Data/emuee_ih.mat');
+dune_nh = load('Data/NH_data.mat');
+dune_ih = load('Data/IH_data.mat');
+exp_nh = load('Data/NH_data.mat');
+exp_ih = load('Data/IH_data.mat');
+nonunit_nh = load('Data/NH_data.mat');
+nonunit_ih = load('Data/IH_data.mat');
+m = 0.0:0.002:0.20; % Lightest neutrino mass range
+cflv_nh = 10.^(emuee_nh.emu_ee);
+cflv_ih = 10.^(emuee_ih.emu_ee);
+dune_nh = 10.^(dune_nh.minValuesDune);
+dune_ih = 10.^(dune_ih.minValuesDune);
+exp_nh = 10.^(exp_nh.minValuesExp);
+exp_ih = 10.^(exp_ih.minValuesExp);
+nonunit_nh = 10.^(nonunit_nh.minValuesNonunit);
+nonunit_ih = 10.^(nonunit_ih.minValuesNonunit);
+% area(m,(exp_nh),'FaceColor','y');
+% hold on;
+% area(m,(dune_nh),'FaceColor', [0 0.61 0]); % Grey = [0.5 0.5 0.5]
+% area(m,(nonunit_nh),'FaceColor', 'c');
+% dune_nhplot = plot(m,(dune_nh),'-k');
+% dune_ihplot = plot(m,(dune_ih),'--k');
+% exp_nhplot = plot(m,exp_nh,'-k');
+% exp_ihplot = plot(m,exp_ih,'--k');
+% nonunit_nhplot = plot(m,(nonunit_nh),'-k');
+% nonunit_ihplot = plot(m,(nonunit_ih),'--k');
+% plottables = [nonunit_nhplot nonunit_ihplot];
+area(m,cflv_nh,'FaceColor','r'); hold on;
+cflv_nhplot = plot(m,cflv_nh,'-k');
+cflv_ihplot = plot(m,cflv_ih,'--k');
+Beautify(false,0,1.0e10,fs);
