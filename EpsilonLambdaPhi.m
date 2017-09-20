@@ -96,7 +96,7 @@ ylabel('log_{10}|\epsilon|','FontSize',fs);
 title(['DUNE (M_{\Delta}=' num2str(mDelta/10^12) ' TeV)'],'FontSize',fs);
 hold off;
 
-[minIndexValues, minValuesDune] = FindMinIndex(ee_dune, emu_dune, etau_dune, mutau_dune, tautau_dune);
+[maxIndexValues, maxValuesDune] = FindMaxIndex(ee_dune, emu_dune, etau_dune, mutau_dune, tautau_dune);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PLOT FOR MAXIMAL NON-UNITARY DATA %
@@ -122,7 +122,7 @@ ylabel('log_{10}|\epsilon|','FontSize',fs);
 title(['Nonunitarity (M_{\Delta}=' num2str(mDelta/10^12) ' TeV)'],'FontSize',fs);
 hold off;
 
-minValuesNonunit = GetMinValuesByIndex(minIndexValues, ee_nonunit, emu_nonunit, etau_nonunit, mutau_nonunit, tautau_nonunit);
+maxValuesNonunit = GetValuesByIndex(maxIndexValues, ee_nonunit, emu_nonunit, etau_nonunit, mutau_nonunit, tautau_nonunit);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PLOT FOR CURRENT EXPERIMENTAL DATA %
@@ -147,7 +147,7 @@ ylabel('log_{10}|\epsilon|','FontSize',fs);
 title(['Experimental data (M_{\Delta}=' num2str(mDelta/10^12) ' TeV)'],'FontSize',fs);
 hold off;
 
-minValuesExp = GetMinValuesByIndex(minIndexValues, ee_exp, emu_exp, etau_exp, mutau_exp, tautau_exp);
+maxValuesExp = GetValuesByIndex(maxIndexValues, ee_exp, emu_exp, etau_exp, mutau_exp, tautau_exp);
 
 %%%%%%%%%%%%%%%%%%%
 % COMBINE RESULTS %
@@ -155,13 +155,13 @@ minValuesExp = GetMinValuesByIndex(minIndexValues, ee_exp, emu_exp, etau_exp, mu
 %figure;
 subplot(2,2,4);
 %area(m1range,log10(minValuesExp),'FaceColor','g');
-plot(lambdaRange,minValuesExp,'Color',[0 0.5 0]);
+plot(lambdaRange,maxValuesExp,'Color',[0 0.5 0]);
 hold on;
 %area(m1range,log10(minValuesTot),'FaceColor', [0.5 0.5 0.5]); % Grey = [0.5 0.5 0.5]
 %area(m1range,log10(minValuesTot),'FaceColor', 'c');
 %area(m1range,log10(minValuesNonUnit),'FaceColor','r');
-plot(lambdaRange,minValuesDune,'Color', 'b');
-plot(lambdaRange,minValuesNonunit,'Color','r');
+plot(lambdaRange,maxValuesDune,'Color', 'b');
+plot(lambdaRange,maxValuesNonunit,'Color','r');
 %plot(m1range,emu_ee,'Color','k');
 set(gca,'FontSize',fs);
 xlabel('\lambda_{\phi} (eV)','FontSize',fs);

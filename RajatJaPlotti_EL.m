@@ -63,4 +63,9 @@ for lambda = lambdaRange
     j=j+1;
 end
 values = log10(values);
-plot(lambdaRange, values);
+% This just for checking/debugging
+if(alpha == 1 && beta == 1)
+    plot(lambdaRange, values,'--');
+else
+    plot(lambdaRange, values);    
+end

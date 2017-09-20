@@ -1,8 +1,9 @@
 clear;
 nh=true; m1=0.1; fs = 20;
 
-% Linear scale
-lambdaRange = 0.02:0.02:5;
+% Exponential scale
+lambdaExp = -2:0.05:6;
+lambdaRange = 10.^lambdaExp;
 
 alpha = 1; beta = 1;    % We look for the best limit, eps_m(e,e)
 ne = 7.645e-18*1.0e27;  % In eV^3
@@ -81,11 +82,12 @@ for lambda = lambdaRange
     values(k,j) = log10(sqrt(abs(result))); % lambda_phi
     j=j+1;
 end
-plot(lambdaRange, values(k,:));
+plot(lambdaExp, values(k,:));
 hold on;
 end
 set(gca,'FontSize',fs);
-xlabel('\lambda_\phi (eV)','FontSize',fs);
+ylim([-6 1]);
+xlabel('log_{10}\lambda_\phi/eV','FontSize',fs);
 ylabel(['log_{10}|' char(949) '|'],'FontSize',fs);
 legend('{\fontsize{15} 1 TeV}','{\fontsize{15} 2 TeV}','{\fontsize{15} 5 TeV}','{\fontsize{15} 10 TeV}','{\fontsize{15} 20 TeV}','{\fontsize{15} 50 TeV}','Location','NorthEast');
 title('Constraints for NSI and trilinear coupling for different M_{\Delta}. m_1 = 0.1 eV')
@@ -101,21 +103,22 @@ yl = ylim; % Minimum and maximum value of y-axis
 xl = xlim; % and x
 xm = (xl(1)+xl(2))/2; % middle value of x-axis
 xm = 0.5*xm;
-yupper = ones(1,length(lambdaRange))*6;
-lambdaRange = [0 lambdaRange];
-X=[lambdaRange,fliplr(lambdaRange)];
+yupper = ones(1,length(lambdaExp))*yl(2);
+lambdaExp = [(2*lambdaExp(1) - lambdaExp(2)) lambdaExp];
+X=[lambdaExp,fliplr(lambdaExp)];
 Y=[y1,y1(1),yupper(1),fliplr(yupper)];
 h=fill(X,Y,'b');
 set(h,'facealpha',.2)
-
-Y=[y2,y2(1),y1(1),fliplr(y1)];
-h=fill(X,Y,'g');
-set(h,'facealpha',.2)
-
-Y=[y3,y3(1),y2(1),fliplr(y2)];
-h=fill(X,Y,'r');
-set(h,'facealpha',.2)
-text(xm,2,'Excluded','FontSize',fs)
-text(xm,0.3,'DUNE','FontSize',fs)
-text(xm,-2,'New interactions (NSI)','FontSize',fs)
-text(xm,-3.4,'Possible misinterpretation of NSI','FontSize',fs)
+xlim([min(lambdaExp) max(lambdaExp)])
+% 
+% Y=[y2,y2(1),y1(1),fliplr(y1)];
+% h=fill(X,Y,'g');
+% set(h,'facealpha',.2)
+% 
+% Y=[y3,y3(1),y2(1),fliplr(y2)];
+% h=fill(X,Y,'r');
+% set(h,'facealpha',.2)
+% text(xm,2,'Excluded','FontSize',fs)
+% text(xm,0.3,'DUNE','FontSize',fs)
+% text(xm,-2,'New interactions (NSI)','FontSize',fs)
+% text(xm,-3.4,'Possible misinterpretation of NSI','FontSize',fs)

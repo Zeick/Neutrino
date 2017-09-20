@@ -2,7 +2,7 @@ clear;
 nh=true; m1=0.1; fs = 20;
 
 % Linear scale
-lambdaRange = 0.02:0.02:5;
+lambdaRange = 0.01:0.01:2;
 
 alpha = 1; beta = 1;    % We look for the best limit, eps_m(e,e)
 ne = 7.645e-18*1.0e27;  % In eV^3
@@ -57,11 +57,13 @@ mD2 = diag([m1^2 m2^2 m3^2]); % Diagonal mass matrix squared
 U = GenerateMixingMatrix(s12,s13,s23,delta);
 Udag = ctranspose(U);
 mnu2 = U*mD2*Udag + diag([A 0 0]);
-mDeltaRange = [1 2 5 10 20 50]*1.0e12;
+%mDeltaRange = [1 2 5 10 20 50]*1.0e12;
 %mDeltaRange = (0.5:0.5:10)*1.0e12;
-%mDeltaRange = 1.0e12;
+mDeltaRange = 0.75e12;
 values = zeros(length(mDeltaRange),length(lambdaRange));
 k=0;
+limitFound = false;
+limitFoundDune = false;
 for mDelta = mDeltaRange
     k=k+1;
     j=1;
@@ -78,17 +80,29 @@ for lambda = lambdaRange
     else
         result = -mDelta^2*sqrt(mnu2(e,alpha)*mnu2dag(alpha,e))/(8*sqrt(2)*Gf*v^4*lambda^2);
     end
-    values(k,j) = log10(sqrt(abs(result))); % lambda_phi
+    values(k,j) = log10(abs(result)); % lambda_phi
+    if(abs(result) <= eps(alpha,beta) && ~limitFound)
+        limitFound = true;
+        lambdaLimit = lambda;
+        fprintf('Lower experimental limit for lambda_phi: %.2f eV\n',lambda);
+    end
+    if(abs(result) <= eps_dune(alpha,beta) && ~limitFoundDune)
+        limitFoundDune = true;
+        lambdaLimitDune = lambda;
+        fprintf('Lower DUNE limit for lambda_phi: %.2f eV\n',lambda);
+    end
     j=j+1;
 end
 plot(lambdaRange, values(k,:));
 hold on;
 end
 set(gca,'FontSize',fs);
+ylim([-1 1]);
 xlabel('\lambda_\phi (eV)','FontSize',fs);
 ylabel(['log_{10}|' char(949) '|'],'FontSize',fs);
-legend('{\fontsize{15} 1 TeV}','{\fontsize{15} 2 TeV}','{\fontsize{15} 5 TeV}','{\fontsize{15} 10 TeV}','{\fontsize{15} 20 TeV}','{\fontsize{15} 50 TeV}','Location','NorthEast');
-title('Constraints for NSI and trilinear coupling for different M_{\Delta}. m_1 = 0.1 eV')
+%legend('{\fontsize{15} 1 TeV}','{\fontsize{15} 2 TeV}','{\fontsize{15} 5 TeV}','{\fontsize{15} 10 TeV}','{\fontsize{15} 20 TeV}','{\fontsize{15} 50 TeV}','Location','NorthEast');
+legend('{\fontsize{15} M_{\Delta} = 750 GeV}','Location','NorthEast');
+title('Constraints for NSI and \phi\phi\Delta coupling (m_1 = 0.1 eV)');
 
 y1 = ones(1,length(lambdaRange))*log10(eps(alpha,beta));
 y2 = ones(1,length(lambdaRange))*log10(eps_dune(alpha,beta));
@@ -101,21 +115,22 @@ yl = ylim; % Minimum and maximum value of y-axis
 xl = xlim; % and x
 xm = (xl(1)+xl(2))/2; % middle value of x-axis
 xm = 0.5*xm;
-yupper = ones(1,length(lambdaRange))*6;
-lambdaRange = [0 lambdaRange];
+yupper = ones(1,length(lambdaRange))*yl(2);
+lambdaRange = [(2*lambdaRange(1) - lambdaRange(2)) lambdaRange];
 X=[lambdaRange,fliplr(lambdaRange)];
 Y=[y1,y1(1),yupper(1),fliplr(yupper)];
 h=fill(X,Y,'b');
 set(h,'facealpha',.2)
+xlim([min(lambdaRange) max(lambdaRange)]);
 
 Y=[y2,y2(1),y1(1),fliplr(y1)];
 h=fill(X,Y,'g');
 set(h,'facealpha',.2)
-
-Y=[y3,y3(1),y2(1),fliplr(y2)];
-h=fill(X,Y,'r');
-set(h,'facealpha',.2)
-text(xm,2,'Excluded','FontSize',fs)
-text(xm,0.3,'DUNE','FontSize',fs)
-text(xm,-2,'New interactions (NSI)','FontSize',fs)
-text(xm,-3.4,'Possible misinterpretation of NSI','FontSize',fs)
+% 
+% Y=[y3,y3(1),y2(1),fliplr(y2)];
+% h=fill(X,Y,'r');
+% set(h,'facealpha',.2)
+% text(xm,2,'Excluded','FontSize',fs)
+% text(xm,0.3,'DUNE','FontSize',fs)
+% text(xm,-2,'New interactions (NSI)','FontSize',fs)
+% text(xm,-3.4,'Possible misinterpretation of NSI','FontSize',fs)
