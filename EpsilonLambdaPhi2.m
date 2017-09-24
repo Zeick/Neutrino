@@ -1,5 +1,5 @@
 clear;
-nh=true; m1=0.1; fs = 20;
+nh=true; m1=0.2; fs = 20;
 
 % Linear scale
 lambdaRange = 0.02:0.02:5;
@@ -55,8 +55,6 @@ else
 end
 mD2 = diag([m1^2 m2^2 m3^2]); % Diagonal mass matrix squared
 U = GenerateMixingMatrix(s12,s13,s23,delta);
-Udag = ctranspose(U);
-mnu2 = U*mD2*Udag + diag([A 0 0]);
 mDeltaRange = [1 2 5 10 20 50]*1.0e12;
 %mDeltaRange = (0.5:0.5:10)*1.0e12;
 %mDeltaRange = 1.0e12;
@@ -65,30 +63,31 @@ k=0;
 for mDelta = mDeltaRange
     k=k+1;
     j=1;
-for lambda = lambdaRange
-    if (alpha == e)
-        mnu2(alpha, beta) = mnu2(alpha, beta) + A*eps(alpha, beta);
-        if (alpha ~= beta) % For non-diagonal elements both (alpha,beta) and (beta,alpha)
-            mnu2(beta, alpha) = mnu2(beta, alpha) + A*conj(eps(alpha,beta));
+    for lambda = lambdaRange
+        mnu2 = GenerateMassMatrix(U,m1,m21,m31,nh);
+        if (alpha == e)
+            mnu2(alpha, beta) = mnu2(alpha, beta) + A*eps(alpha, beta);
+            if (alpha ~= beta) % For non-diagonal elements both (alpha,beta) and (beta,alpha)
+                mnu2(beta, alpha) = mnu2(beta, alpha) + A*conj(eps(alpha,beta));
+            end
         end
+        mnu2dag = ctranspose(mnu2);
+        if(alpha == beta) % Case ee -> ee - mumu; Case tautau -> tautau - mumu
+            result = -mDelta^2*(sqrt(mnu2(e,alpha)*mnu2dag(alpha,e)) - sqrt(mnu2(e,mu)*mnu2dag(mu,e)))/(8*sqrt(2)*Gf*v^4*lambda^2);
+        else
+            result = -mDelta^2*sqrt(mnu2(e,alpha)*mnu2dag(alpha,e))/(8*sqrt(2)*Gf*v^4*lambda^2);
+        end
+        values(k,j) = log10(sqrt(abs(result))); % lambda_phi
+        j=j+1;
     end
-    mnu2dag = ctranspose(mnu2);
-    if(alpha == beta) % Case ee -> ee - mumu; Case tautau -> tautau - mumu
-        result = -mDelta^2*(sqrt(mnu2(e,alpha)*mnu2dag(alpha,e)) - sqrt(mnu2(e,mu)*mnu2dag(mu,e)))/(8*sqrt(2)*Gf*v^4*lambda^2);
-    else
-        result = -mDelta^2*sqrt(mnu2(e,alpha)*mnu2dag(alpha,e))/(8*sqrt(2)*Gf*v^4*lambda^2);
-    end
-    values(k,j) = log10(sqrt(abs(result))); % lambda_phi
-    j=j+1;
-end
-plot(lambdaRange, values(k,:));
-hold on;
+    plot(lambdaRange, values(k,:));
+    hold on;
 end
 set(gca,'FontSize',fs);
 xlabel('\lambda_\phi (eV)','FontSize',fs);
 ylabel(['log_{10}|' char(949) '|'],'FontSize',fs);
 legend('{\fontsize{15} 1 TeV}','{\fontsize{15} 2 TeV}','{\fontsize{15} 5 TeV}','{\fontsize{15} 10 TeV}','{\fontsize{15} 20 TeV}','{\fontsize{15} 50 TeV}','Location','NorthEast');
-title('Constraints for NSI and trilinear coupling for different M_{\Delta}. m_1 = 0.1 eV')
+title(['m_1 = ' num2str(m1) ' eV']);
 
 y1 = ones(1,length(lambdaRange))*log10(eps(alpha,beta));
 y2 = ones(1,length(lambdaRange))*log10(eps_dune(alpha,beta));
