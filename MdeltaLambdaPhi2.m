@@ -23,7 +23,7 @@ tau = 3;
 %%%%%%%%%%%%%%%%%%
 % SET PARAMETERS %
 %%%%%%%%%%%%%%%%%%
-mDeltaRange = (500:100:10000)*10^9;
+mDeltaRange = (0:100:10000)*10^9;
 m1 = 0.2; % Lightest neutrino mass
 
 % Below in all cases
@@ -40,7 +40,7 @@ eps_exp = [[eps_ee_max         eps_emu_max         eps_etau_max];
 
 % Values from 1609.08637 (Blennow-Coloma) Table I nonunitarity column
 % (Nonunitarity limits)
-% Note: Original limits are 2sigma limits -> Transformaxg to 90% CL
+% Note: Original limits are 2sigma limits -> Transforming to 90% CL
 eps_ee_max = 1.3e-3;    eps_emu_max = 0.5*6.8e-4;     eps_etau_max = 0.5*2.7e-3;
 eps_mumu_max = 2.0e-4;  eps_mutau_max = 0.5*1.2e-3;   eps_tautau_max = 2.8e-3;
 eps_nonunit = [[eps_ee_max         eps_emu_max         eps_etau_max];
@@ -76,8 +76,6 @@ end
 % PLOT FOR LBNO/DUNE DATA %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 fprintf('###############\n     DUNE\n###############\n');
-figure;
-subplot(2,2,1);
 ee_dune = RajatJaPlotti_ML(e,e,m1,mDeltaRange,s23range,deltarange,eps,nh);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1; hold on;
 emu_dune = RajatJaPlotti_ML(e,mu,m1,mDeltaRange,s23range,deltarange,eps,nh);
@@ -88,22 +86,13 @@ mutau_dune = RajatJaPlotti_ML(mu,tau,m1,mDeltaRange,s23range,deltarange,eps,nh);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
 tautau_dune = RajatJaPlotti_ML(tau,tau,m1,mDeltaRange,s23range,deltarange,eps,nh);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-% Beautifying the plots (showLegend, ymax, yMax, fontSize)
-set(gca,'FontSize',fs);
-xlabel('M_{\Delta} (eV)','FontSize',fs);
-ylabel('log_{10}|\lambda_{\phi}/eV|','FontSize',fs);
-title('DUNE (m1=0.2 eV)','FontSize',fs);
-hold off;
 
-[maxIndexValues, maxValuesDune] = FindMaxIndex(ee_dune, emu_dune, etau_dune, mutau_dune, tautau_dune);
+[minIndexValues, minValuesDune] = FindMaxIndex(ee_dune, emu_dune, etau_dune, mutau_dune, tautau_dune);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PLOT FOR MAXIMAL NON-UNITARY DATA %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 fprintf('#################\n# NON-UNITARITY #\n#################\n');
-
-%figure;
-subplot(2,2,2);
 ee_nonunit = RajatJaPlotti_ML(e,e,m1,mDeltaRange,s23range,deltarange,eps_nonunit,nh);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1; hold on;
 emu_nonunit = RajatJaPlotti_ML(e,mu,m1,mDeltaRange,s23range,deltarange,eps_nonunit,nh);
@@ -115,20 +104,12 @@ fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = 
 tautau_nonunit = RajatJaPlotti_ML(tau,tau,m1,mDeltaRange,s23range,deltarange,eps_nonunit,nh);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
 
-set(gca,'FontSize',fs);
-xlabel('M_{\Delta} (eV)','FontSize',fs);
-ylabel('log_{10}|\lambda_{\phi}/eV|','FontSize',fs);
-title('Nonunitarity (m1=0.2 eV)','FontSize',fs);
-hold off;
-
-maxValuesNonunit = GetValuesByIndex(maxIndexValues, ee_nonunit, emu_nonunit, etau_nonunit, mutau_nonunit, tautau_nonunit);
+minValuesNonunit = GetValuesByIndex(minIndexValues, ee_nonunit, emu_nonunit, etau_nonunit, mutau_nonunit, tautau_nonunit);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PLOT FOR CURRENT EXPERIMENTAL DATA %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 fprintf('##################\n# CURRENT LIMITS #\n##################\n');
-%figure;
-subplot(2,2,3);
 ee_exp = RajatJaPlotti_ML(e,e,m1,mDeltaRange,s23range,deltarange,eps_exp,nh);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1; hold on;
 emu_exp = RajatJaPlotti_ML(e,mu,m1,mDeltaRange,s23range,deltarange,eps_exp,nh);
@@ -140,34 +121,35 @@ fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = 
 tautau_exp = RajatJaPlotti_ML(tau,tau,m1,mDeltaRange,s23range,deltarange,eps_exp,nh);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
 
-set(gca,'FontSize',fs);
-xlabel('M_{\Delta} (eV)','FontSize',fs);
-ylabel('log_{10}|\lambda_{\phi}/eV|','FontSize',fs);
-title('Experimental limit (m1=0.2 eV)','FontSize',fs);
-hold off;
-
-maxValuesExp = GetValuesByIndex(maxIndexValues, ee_exp, emu_exp, etau_exp, mutau_exp, tautau_exp);
+minValuesExp = GetValuesByIndex(minIndexValues, ee_exp, emu_exp, etau_exp, mutau_exp, tautau_exp);
 
 %%%%%%%%%%%%%%%%%%%
 % COMBINE RESULTS %
 %%%%%%%%%%%%%%%%%%%
-%figure;
-subplot(2,2,4);
-%area(m1range,log10(maxValuesExp),'FaceColor','g');
-plot(mDeltaRange,maxValuesExp,'Color',[0 0.5 0]);
+
+%area(m1range,log10(minValuesExp),'FaceColor','g');
+mDeltaRange = mDeltaRange*1e-12;
+%mDeltaRange = (0:100:10000)*1e-3;
+
+plot(mDeltaRange,minValuesExp,'Color',[0 0.5 0]);
 hold on;
-%area(m1range,log10(maxValuesTot),'FaceColor', [0.5 0.5 0.5]); % Grey = [0.5 0.5 0.5]
-%area(m1range,log10(maxValuesTot),'FaceColor', 'c');
-%area(m1range,log10(maxValuesNonUnit),'FaceColor','r');
-plot(mDeltaRange,maxValuesDune,'Color', 'b');
-plot(mDeltaRange,maxValuesNonunit,'Color','r');
-%plot(m1range,emu_ee,'Color','k');
-set(gca,'FontSize',fs);
-xlabel('M_{\Delta} (eV)','FontSize',fs);
-ylabel('log_{10}|\lambda_{\phi}/eV|','FontSize',fs);
-title('Combined plot','FontSize',fs);
+plot(mDeltaRange,minValuesDune,'Color', 'k');
+plot(mDeltaRange,minValuesNonunit,'Color','k');
+
+area(mDeltaRange,minValuesNonunit,'FaceColor','g');
+area(mDeltaRange,minValuesDune,'FaceColor', 'y');
+area(mDeltaRange,minValuesExp,'FaceColor', 'w'); % Grey = [0.5 0.5 0.5]
+
 %text(0.01,15.0,'Excluded','FontSize',fs)
 %text(0.01,13.1,'DUNE coverage','FontSize',fs)
 %text(0.01,11,'Nonunitarity','FontSize',fs)
-legend('{\fontsize{15}Experimental limit}', '{\fontsize{15}DUNE coverage}','{\fontsize{15}Non-unitary limit}','Location','NorthEast');
+
+set(gca,'FontSize',fs);
+xlim([0 10]);
+ylim([0 3]);
+xlabel('M_{\Delta} (TeV)','FontSize',fs);
+ylabel('\lambda_{\phi}/eV','FontSize',fs);
+title(['m1 = ' num2str(m1) ' eV'],'FontSize',fs);
+
+%legend('{\fontsize{15}Experimental limit}', '{\fontsize{15}DUNE coverage}','{\fontsize{15}Non-unitary limit}','Location','NorthEast');
 hold off;

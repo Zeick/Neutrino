@@ -11,7 +11,7 @@ stages=15;          %
 y_upper = 14;       % Upper limit of y-axis
 y_lower = 10;       % Lower limit of y-axis
 fs = 20;            % Font size of title and axes
-nh = false;          % Normal hierarchy (false -> inverse hierarchy)
+nh = true;          % Normal hierarchy (false -> inverse hierarchy)
 s23Fix = false;     % If true, set best-fit value for s23
 deltaFix = false;   % likewise for deltaCP
 
@@ -101,6 +101,8 @@ hold off;
 % minValues = min(minValues,mutau_dune);
 % minValuesDune = min(minValues,tautau_dune);
 [minIndexValues, minValuesDune] = FindMinIndex(ee_dune, emu_dune, etau_dune, mutau_dune, tautau_dune);
+
+pause
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PLOT FOR MAXIMAL NON-UNITARY DATA %

@@ -55,12 +55,18 @@ for mDelta = mDeltaRange
             if(alpha == beta) % Case ee -> ee - mumu; Case tautau -> tautau - mumu
                 result = -mDelta^2*(sqrt(mnu2(e,alpha)*mnu2dag(alpha,e)) - sqrt(mnu2(e,mu)*mnu2dag(mu,e)))/(eps(alpha,alpha)*8*sqrt(2)*Gf*v^4);
             else
-                result = -mDelta^2*sqrt(mnu2(e,alpha)*mnu2dag(alpha,e))/(eps(alpha,alpha)*8*sqrt(2)*Gf*v^4);
+                result = -mDelta^2*sqrt(mnu2(e,beta)*mnu2dag(alpha,e))/(eps(alpha,beta)*8*sqrt(2)*Gf*v^4);
             end
             values(j) = sqrt(abs(result)); % lambda_phi
         end
     end
     j=j+1;
 end
-values = log10(values);
-plot(mDeltaRange, values);
+
+% FOR MdeltaLambdaPhi.m, NOT for MdeltaLambdaPhi2-version
+% values = log10(values);
+% if (alpha == 1 && beta == 3)
+%     plot(mDeltaRange, values,'-','LineWidth',3);
+% else
+%     plot(mDeltaRange, values);
+% end
