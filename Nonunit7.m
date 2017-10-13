@@ -102,8 +102,6 @@ hold off;
 % minValuesDune = min(minValues,tautau_dune);
 [minIndexValues, minValuesDune] = FindMinIndex(ee_dune, emu_dune, etau_dune, mutau_dune, tautau_dune);
 
-pause
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PLOT FOR MAXIMAL NON-UNITARY DATA %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -126,7 +124,7 @@ Beautify(true,y_lower,y_upper,fs);
 text(0.01,15,'Non-unitarity limit','FontSize',fs)
 hold off;
 
-minValuesNonunit = GetMinValuesByIndex(minIndexValues, ee_nonunit, emu_nonunit, etau_nonunit, mutau_nonunit, tautau_nonunit);
+minValuesNonunit = GetValuesByIndex(minIndexValues, ee_nonunit, emu_nonunit, etau_nonunit, mutau_nonunit, tautau_nonunit);
 
 % minValues = min(minValues,ee_nonunit);
 % minValues = min(minValues,emu_nonunit);
@@ -154,7 +152,7 @@ Beautify(true,y_lower,y_upper,fs);
 text(0.01,15,'Current experimental limit','FontSize',fs)
 hold off;
 
-minValuesExp = GetMinValuesByIndex(minIndexValues, ee_exp, emu_exp, etau_exp, mutau_exp, tautau_exp);
+minValuesExp = GetValuesByIndex(minIndexValues, ee_exp, emu_exp, etau_exp, mutau_exp, tautau_exp);
 % minValues = min(minValues,ee_exp);
 % minValues = min(minValues,emu_exp);
 % minValues = min(minValues,etau_exp);

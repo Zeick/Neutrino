@@ -1,16 +1,16 @@
 % INITIALIZATION
 clear;
-logscale = true;
+logscale = false;
 nh=true; m1=0; fs = 20; k = 0;
 mDelta = 0.75e12;
 m1range = 0:0.1:0.2;
 
 % Linear scale
-lambdaRange = 0.01:0.001:0.5;
+lambdaRange = 0.01:0.001:1.1;
 values = zeros(length(m1range),length(lambdaRange));
 
 e = 1; mu = 2;
-alpha = 1; beta = 1;    % We look for the limit eps_m(e,e)
+alpha = 1; beta = 3;    % We look for the limit eps_m(e,e)
 ne = 7.645e-18*1.0e27;  % In eV^3
 Gf = 1.1664e-5*1.0e-18; % Fermi constant in eV^-2
 Enu = 2.0e9; 		    % Neutrino energy in eV    
@@ -95,10 +95,10 @@ for m1 = m1range
         j=j+1;
     end
 end
-plot(lambdaRange, values(1,:));
+plot(lambdaRange, values(1,:),'-k','LineWidth',2);
 hold on;
-plot(lambdaRange, values(2,:));
-plot(lambdaRange, values(3,:));
+plot(lambdaRange, values(2,:),'--k','LineWidth',2);
+plot(lambdaRange, values(3,:),':k','LineWidth',2);
 
 
 set(gca,'FontSize',fs);
@@ -108,7 +108,7 @@ if logscale
     ylim([-1 1]); % linear-eps
     ylabel(['log_{10}|' char(949) '|'],'FontSize',fs);    
 else
-    ylim([0 5]); % linear-eps
+    ylim([0 3.5]); % linear-eps
     ylabel(['|' char(949) '|'],'FontSize',fs);
 end
 %legend('{\fontsize{15} 1 TeV}','{\fontsize{15} 2 TeV}','{\fontsize{15} 5 TeV}','{\fontsize{15} 10 TeV}','{\fontsize{15} 20 TeV}','{\fontsize{15} 50 TeV}','Location','NorthEast');
@@ -116,13 +116,13 @@ legend('{\fontsize{15} m_{1} = 0 eV}','{\fontsize{15} m_{1} = 0.1 eV}','{\fontsi
 title('Constraints for NSI and \phi\phi\Delta coupling (M_\Delta = 750 GeV)');
 
 if logscale
-y1 = ones(1,length(lambdaRange))*log10(eps(alpha,beta));
-y2 = ones(1,length(lambdaRange))*log10(eps_dune(alpha,beta));
-y3 = ones(1,length(lambdaRange))*log10(eps_nonunit(alpha,beta));
+    y1 = ones(1,length(lambdaRange))*log10(eps(alpha,beta));
+    y2 = ones(1,length(lambdaRange))*log10(eps_dune(alpha,beta));
+    y3 = ones(1,length(lambdaRange))*log10(eps_nonunit(alpha,beta));
 else % Linear scale
-y1 = ones(1,length(lambdaRange))*eps(alpha,beta);
-y2 = ones(1,length(lambdaRange))*eps_dune(alpha,beta);
-y3 = ones(1,length(lambdaRange))*eps_nonunit(alpha,beta);
+    y1 = ones(1,length(lambdaRange))*eps(alpha,beta);
+    y2 = ones(1,length(lambdaRange))*eps_dune(alpha,beta);
+    y3 = ones(1,length(lambdaRange))*eps_nonunit(alpha,beta);
 end
 
 yl = ylim; % Minimum and maximum value of y-axis
@@ -140,5 +140,10 @@ xlim([min(lambdaRange) max(lambdaRange)]);
 Y=[y2,y2(1),y1(1),fliplr(y1)];
 h=fill(X,Y,'g');
 set(h,'facealpha',.2)
-% text(xm,2,'Excluded','FontSize',fs)
-% text(xm,0.3,'DUNE','FontSize',fs)
+text(1.2*xm,3.2,'Excluded','FontSize',fs)
+text(1.2*xm,2.0,'DUNE','FontSize',fs)
+
+% CMS Exclusion
+area(lambdaRange,[values(1,1) values(1,:)],'FaceColor',[0.7 0.7 0.7]); % Grey fill
+cmstext = text(0.08*xm,0.12*(yl(1)+yl(2)),'CMS','FontSize',fs,'Color','w');
+set(cmstext,'Rotation',-45);
