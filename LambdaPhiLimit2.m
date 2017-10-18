@@ -1,7 +1,7 @@
 % INITIALIZATION
 clear;
 logscale = false;
-nh=true; m1=0; fs = 20; k = 0;
+nh=false; m1=0; fs = 20; k = 0;
 mDelta = 0.75e12;
 m1range = 0:0.1:0.2;
 
@@ -10,7 +10,7 @@ lambdaRange = 0.01:0.001:1.1;
 values = zeros(length(m1range),length(lambdaRange));
 
 e = 1; mu = 2;
-alpha = 1; beta = 3;    % We look for the limit eps_m(e,e)
+alpha = 1; beta = 3;    % We look for the limit eps_m(e,tau)
 ne = 7.645e-18*1.0e27;  % In eV^3
 Gf = 1.1664e-5*1.0e-18; % Fermi constant in eV^-2
 Enu = 2.0e9; 		    % Neutrino energy in eV    
@@ -99,7 +99,7 @@ plot(lambdaRange, values(1,:),'-k','LineWidth',2);
 hold on;
 plot(lambdaRange, values(2,:),'--k','LineWidth',2);
 plot(lambdaRange, values(3,:),':k','LineWidth',2);
-
+plot(lambdaRange, 0.823*ones(1,length(lambdaRange)),'-.k','LineWidth',1);
 
 set(gca,'FontSize',fs);
 %ylim([-1 1]); % log-eps
@@ -109,11 +109,11 @@ if logscale
     ylabel(['log_{10}|' char(949) '|'],'FontSize',fs);    
 else
     ylim([0 3.5]); % linear-eps
-    ylabel(['|' char(949) '|'],'FontSize',fs);
+    ylabel(['|' char(949) '|^m_{e\tau}'],'FontSize',fs);
 end
 %legend('{\fontsize{15} 1 TeV}','{\fontsize{15} 2 TeV}','{\fontsize{15} 5 TeV}','{\fontsize{15} 10 TeV}','{\fontsize{15} 20 TeV}','{\fontsize{15} 50 TeV}','Location','NorthEast');
 legend('{\fontsize{15} m_{1} = 0 eV}','{\fontsize{15} m_{1} = 0.1 eV}','{\fontsize{15} m_{1} = 0.2 eV}','Location','NorthEast');
-title('Constraints for NSI and \phi\phi\Delta coupling (M_\Delta = 750 GeV)');
+%title('Constraints for NSI and \phi\phi\Delta coupling (M_\Delta = 750 GeV)');
 
 if logscale
     y1 = ones(1,length(lambdaRange))*log10(eps(alpha,beta));
@@ -142,6 +142,7 @@ h=fill(X,Y,'g');
 set(h,'facealpha',.2)
 text(1.2*xm,3.2,'Excluded','FontSize',fs)
 text(1.2*xm,2.0,'DUNE','FontSize',fs)
+text(2.3*xm,0.823+0.15,'Perturbative limit','FontSize',fs);
 
 % CMS Exclusion
 area(lambdaRange,[values(1,1) values(1,:)],'FaceColor',[0.7 0.7 0.7]); % Grey fill
