@@ -11,7 +11,7 @@ stages=15;          %
 y_upper = 14;       % Upper limit of y-axis
 y_lower = 10;       % Lower limit of y-axis
 fs = 20;            % Font size of title and axes
-nh = true;          % Normal hierarchy (false -> inverse hierarchy)
+nh = false;          % Normal hierarchy (false -> inverse hierarchy)
 s23Fix = false;     % If true, set best-fit value for s23
 deltaFix = false;   % likewise for deltaCP
 
@@ -64,7 +64,11 @@ if s23Fix
        s23range = sqrt(0.587);
    end
 else
-    s23range = sqrt(0.385:0.01:0.635);
+    if nh
+        s23range = sqrt(0.424:0.01:0.592);
+    else
+        s23range = sqrt(0.500:0.01:0.592);
+    end
 end
 if deltaFix
     deltarange = -pi/2;
@@ -95,11 +99,6 @@ text(0.01,15,'DUNE limit','FontSize',fs)
 hold off;
 
 % Find minimum values of all datasets
-% minValues = min(minValues,ee_dune);
-% minValues = min(minValues,emu_dune);
-% minValues = min(minValues,etau_dune);
-% minValues = min(minValues,mutau_dune);
-% minValuesDune = min(minValues,tautau_dune);
 [minIndexValues, minValuesDune] = FindMinIndex(ee_dune, emu_dune, etau_dune, mutau_dune, tautau_dune);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -126,12 +125,6 @@ hold off;
 
 minValuesNonunit = GetValuesByIndex(minIndexValues, ee_nonunit, emu_nonunit, etau_nonunit, mutau_nonunit, tautau_nonunit);
 
-% minValues = min(minValues,ee_nonunit);
-% minValues = min(minValues,emu_nonunit);
-% minValues = min(minValues,etau_nonunit);
-% minValues = min(minValues,mutau_nonunit);
-% minValuesNonunit = min(minValues,tautau_nonunit);
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PLOT FOR CURRENT EXPERIMENTAL DATA %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -153,11 +146,6 @@ text(0.01,15,'Current experimental limit','FontSize',fs)
 hold off;
 
 minValuesExp = GetValuesByIndex(minIndexValues, ee_exp, emu_exp, etau_exp, mutau_exp, tautau_exp);
-% minValues = min(minValues,ee_exp);
-% minValues = min(minValues,emu_exp);
-% minValues = min(minValues,etau_exp);
-% minValues = min(minValues,mutau_exp);
-% minValuesExp = min(minValues,tautau_exp);
 
 %%%%%%%%%%%%%%%%%%%
 % COMBINE RESULTS %
@@ -169,13 +157,13 @@ plot(m1range,minValuesExp,'Color',[0 0.5 0]);
 hold on;
 %area(m1range,log10(minValuesTot),'FaceColor', [0.5 0.5 0.5]); % Grey = [0.5 0.5 0.5]
 %area(m1range,log10(minValuesTot),'FaceColor', 'c');
-%area(m1range,log10(minValuesNonUnit),'FaceColor','r');
+%area(m1range,log10(minValuesNonunit),'FaceColor','r');
 plot(m1range,minValuesDune,'Color', 'b');
 plot(m1range,minValuesNonunit,'Color','r');
 %plot(m1range,emu_ee,'Color','k');
 Beautify(false,y_lower,y_upper,20);
-%text(0.01,15.0,'Excluded','FontSize',fs)
-%text(0.01,13.1,'DUNE coverage','FontSize',fs)
-%text(0.01,11,'Nonunitarity','FontSize',fs)
+text(0.01,15.0,'Excluded','FontSize',fs)
+text(0.01,13.1,'DUNE coverage','FontSize',fs)
+text(0.01,11,'Nonunitarity','FontSize',fs)
 legend('{\fontsize{15}Experimental limit}', '{\fontsize{15}DUNE coverage}','{\fontsize{15}Non-unitary limit}','Location','NorthEast');
-%hold off;
+hold off;

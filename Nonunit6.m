@@ -94,8 +94,8 @@ fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = 
 mutau_dune = RajatJaPlotti(mu,tau,m1range,s23range,deltarange,eps,nh);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
 % MUST CHANGE LIMITS FOR EPS
-%tautau_dune = RajatJaPlotti(tau,tau,m1range,s23range,deltarange,eps,nh);
-%fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
+tautau_dune = RajatJaPlotti(tau,tau,m1range,s23range,deltarange,eps,nh);
+fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
 
 % Beautifying the plots (showLegend, yMin, yMax, fontSize)
 Beautify(true,y_lower,y_upper,fs);

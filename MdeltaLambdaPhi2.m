@@ -24,7 +24,7 @@ tau = 3;
 % SET PARAMETERS %
 %%%%%%%%%%%%%%%%%%
 mDeltaRange = (0:100:10000)*10^9;
-m1 = 0.2; % Lightest neutrino mass
+m1 = 0.20; % Lightest neutrino mass
 
 % Below in all cases
 % eps_ee_max is actually (eps_ee - eps_mumu)_max and same for
@@ -149,7 +149,7 @@ xlim([0 10]);
 ylim([0 3]);
 xlabel('M_{\Delta} (TeV)','FontSize',fs);
 ylabel('\lambda_{\phi}/eV','FontSize',fs);
-title(['m1 = ' num2str(m1) ' eV'],'FontSize',fs);
+title(['m_1 = ' num2str(m1) ' eV'],'FontSize',fs);
 
 %legend('{\fontsize{15}Experimental limit}', '{\fontsize{15}DUNE coverage}','{\fontsize{15}Non-unitary limit}','Location','NorthEast');
 hold off;

@@ -1,12 +1,15 @@
 % INITIALIZATION
 clear;
+CMS = load('CMSvalues.mat');
+CMS = CMS.values;
 logscale = false;
 nh=false; m1=0; fs = 20; k = 0;
-mDelta = 0.75e12;
+%mDelta = 0.75e12; % 750 GeV
+mDelta = 2.0e12; % 2 TeV
 m1range = 0:0.1:0.2;
 
 % Linear scale
-lambdaRange = 0.01:0.001:1.1;
+lambdaRange = 0.01:0.001:3.0;
 values = zeros(length(m1range),length(lambdaRange));
 
 e = 1; mu = 2;
@@ -99,7 +102,7 @@ plot(lambdaRange, values(1,:),'-k','LineWidth',2);
 hold on;
 plot(lambdaRange, values(2,:),'--k','LineWidth',2);
 plot(lambdaRange, values(3,:),':k','LineWidth',2);
-plot(lambdaRange, 0.823*ones(1,length(lambdaRange)),'-.k','LineWidth',1);
+plot(lambdaRange, 0.095*ones(1,length(lambdaRange)),'-.k','LineWidth',1);
 
 set(gca,'FontSize',fs);
 %ylim([-1 1]); % log-eps
@@ -142,9 +145,10 @@ h=fill(X,Y,'g');
 set(h,'facealpha',.2)
 text(1.2*xm,3.2,'Excluded','FontSize',fs)
 text(1.2*xm,2.0,'DUNE','FontSize',fs)
-text(2.3*xm,0.823+0.15,'Perturbative limit','FontSize',fs);
+text(2.9*xm,0.095+0.15,'$Y=\sqrt{4\pi}$','Interpreter','latex','FontSize',fs);
 
 % CMS Exclusion
-area(lambdaRange,[values(1,1) values(1,:)],'FaceColor',[0.7 0.7 0.7]); % Grey fill
-cmstext = text(0.08*xm,0.12*(yl(1)+yl(2)),'CMS','FontSize',fs,'Color','w');
-set(cmstext,'Rotation',-45);
+%area(lambdaRange,[values(1,1) values(1,:)],'FaceColor',[0.7 0.7 0.7]); % Grey fill
+area([0.01 0.01:0.001:1.1],[CMS(1,1) CMS(1,:)],'FaceColor',[0.7 0.7 0.7]); % Grey fill
+%cmstext = text(0.08*xm,0.12*(yl(1)+yl(2)),'CMS','FontSize',fs,'Color','w');
+%set(cmstext,'Rotation',-45);
