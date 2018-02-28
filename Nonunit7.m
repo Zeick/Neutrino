@@ -11,7 +11,7 @@ stages=15;          %
 y_upper = 14;       % Upper limit of y-axis
 y_lower = 10;       % Lower limit of y-axis
 fs = 20;            % Font size of title and axes
-nh = false;          % Normal hierarchy (false -> inverse hierarchy)
+nh = true;          % Normal hierarchy (false -> inverse hierarchy)
 s23Fix = false;     % If true, set best-fit value for s23
 deltaFix = false;   % likewise for deltaCP
 
@@ -41,12 +41,20 @@ eps_exp = [[eps_ee_max         eps_emu_max         eps_etau_max];
 % Values from 1609.08637 (Blennow-Coloma) Table I nonunitarity column
 % (Nonunitarity limits)
 % Note: Original limits are 2sigma limits -> Transforming to 90% CL
-eps_ee_max = 1.3e-3;    eps_emu_max = 0.5*6.8e-4;     eps_etau_max = 0.5*2.7e-3;
-eps_mumu_max = 2.0e-4;  eps_mutau_max = 0.5*1.2e-3;   eps_tautau_max = 2.8e-3;
+% eps_ee_max = 1.3e-3;    eps_emu_max = 0.5*6.8e-4;     eps_etau_max = 0.5*2.7e-3;
+% eps_mumu_max = 2.0e-4;  eps_mutau_max = 0.5*1.2e-3;   eps_tautau_max = 2.8e-3;
+% eps_nonunit = [[eps_ee_max         eps_emu_max         eps_etau_max];
+%               [conj(eps_emu_max)  eps_mumu_max        eps_mutau_max];
+%               [conj(eps_etau_max) conj(eps_mutau_max) eps_tautau_max]];
+% eps_nonunit = 1.64485/2.0*eps_nonunit; % mathworld.wolfram.com/ConfidenceInterval.html
+
+% Values from 1612.07377 Table I
+eps_ee_max = 0.02;      eps_emu_max = 1.0e-2;     eps_etau_max = 4.2e-2;
+eps_mumu_max = 0.01;   eps_mutau_max = 9.8e-3;   eps_tautau_max = 0.07;
 eps_nonunit = [[eps_ee_max         eps_emu_max         eps_etau_max];
-              [conj(eps_emu_max)  eps_mumu_max        eps_mutau_max];
-              [conj(eps_etau_max) conj(eps_mutau_max) eps_tautau_max]];
-eps_nonunit = 1.64485/2.0*eps_nonunit; % mathworld.wolfram.com/ConfidenceInterval.html
+       [conj(eps_emu_max)  eps_mumu_max        eps_mutau_max];
+       [conj(eps_etau_max) conj(eps_mutau_max) eps_tautau_max]];
+
 
 % Values from 1606.08851 (Blennow-Ohlsson) Table I all NSI 
 % (DUNE limits)

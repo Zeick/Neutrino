@@ -24,7 +24,7 @@ tau = 3;
 % SET PARAMETERS %
 %%%%%%%%%%%%%%%%%%
 mDeltaRange = (0:100:10000)*10^9;
-m1 = 0.20; % Lightest neutrino mass
+m1 = 0.10; % Lightest neutrino mass
 
 % Below in all cases
 % eps_ee_max is actually (eps_ee - eps_mumu)_max and same for
@@ -136,6 +136,7 @@ hold on;
 plot(mDeltaRange,minValuesDune,'Color', 'k');
 plot(mDeltaRange,minValuesNonunit,'Color','k');
 
+set(gca,'Color','c'); % Background color of the plot
 area(mDeltaRange,minValuesNonunit,'FaceColor','g');
 area(mDeltaRange,minValuesDune,'FaceColor', 'y');
 area(mDeltaRange,minValuesExp,'FaceColor', 'w'); % Grey = [0.5 0.5 0.5]
