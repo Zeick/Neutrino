@@ -1,5 +1,5 @@
 % Non-unitarity project (related to PMNS neutrino mixing matrix)
-% (C) Timo Karkkainen 2017 (last modified 30.6.17)
+% (C) Timo J. Karkkainen 2017-18 (last modified 28.2.2018, happy Kalevala day!)
 
 %%%%%%%%%%%%%%%%%%
 % INITIALIZATION %
@@ -11,7 +11,7 @@ stages=15;          %
 y_upper = 14;       % Upper limit of y-axis
 y_lower = 10;       % Lower limit of y-axis
 fs = 20;            % Font size of title and axes
-nh = true;          % Normal hierarchy (false -> inverse hierarchy)
+nh = false;          % Normal hierarchy (false -> inverse hierarchy)
 s23Fix = false;     % If true, set best-fit value for s23
 deltaFix = false;   % likewise for deltaCP
 
@@ -48,7 +48,7 @@ eps_exp = [[eps_ee_max         eps_emu_max         eps_etau_max];
 %               [conj(eps_etau_max) conj(eps_mutau_max) eps_tautau_max]];
 % eps_nonunit = 1.64485/2.0*eps_nonunit; % mathworld.wolfram.com/ConfidenceInterval.html
 
-% Values from 1612.07377 Table I
+% Values from 1612.07377 (Valle et al.) Table I
 eps_ee_max = 0.02;      eps_emu_max = 1.0e-2;     eps_etau_max = 4.2e-2;
 eps_mumu_max = 0.01;   eps_mutau_max = 9.8e-3;   eps_tautau_max = 0.07;
 eps_nonunit = [[eps_ee_max         eps_emu_max         eps_etau_max];
@@ -71,7 +71,7 @@ if s23Fix
    else
        s23range = sqrt(0.587);
    end
-else
+else % 90%CL = 1.645*1sigma CL
     if nh
         s23range = sqrt(0.424:0.01:0.592);
     else
