@@ -1,6 +1,6 @@
 % Non-unitarity project (related to PMNS neutrino mixing matrix)
-% (C) Timo J. Karkkainen 2017-18 (last modified 28.2.2018, happy Kalevala day!)
-
+% (C) Timo J. Karkkainen 2017-18 (last modified 9.3.2018!)
+% 
 %%%%%%%%%%%%%%%%%%
 % INITIALIZATION %
 %%%%%%%%%%%%%%%%%%
@@ -11,9 +11,10 @@ stages=15;          %
 y_upper = 14;       % Upper limit of y-axis
 y_lower = 10;       % Lower limit of y-axis
 fs = 20;            % Font size of title and axes
-nh = false;          % Normal hierarchy (false -> inverse hierarchy)
+nh = true;         % Normal hierarchy (false -> inverse hierarchy)
 s23Fix = false;     % If true, set best-fit value for s23
 deltaFix = false;   % likewise for deltaCP
+anti = true;        % True for antineutrino beam, false for neutrino beam
 
 % Connect lepton flavour to integers
 e = 1;              % Use exp(1) for Neper's number if necessary
@@ -90,15 +91,15 @@ end
 fprintf('###############\n     DUNE\n###############\n');
 figure;
 subplot(2,2,1);
-ee_dune = RajatJaPlotti(e,e,m1range,s23range,deltarange,eps,nh);
+ee_dune = RajatJaPlotti(e,e,m1range,s23range,deltarange,eps,nh,anti);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1; hold on;
-emu_dune = RajatJaPlotti(e,mu,m1range,s23range,deltarange,eps,nh);
+emu_dune = RajatJaPlotti(e,mu,m1range,s23range,deltarange,eps,nh,anti);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-etau_dune = RajatJaPlotti(e,tau,m1range,s23range,deltarange,eps,nh);
+etau_dune = RajatJaPlotti(e,tau,m1range,s23range,deltarange,eps,nh,anti);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-mutau_dune = RajatJaPlotti(mu,tau,m1range,s23range,deltarange,eps,nh);
+mutau_dune = RajatJaPlotti(mu,tau,m1range,s23range,deltarange,eps,nh,anti);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-tautau_dune = RajatJaPlotti(tau,tau,m1range,s23range,deltarange,eps,nh);
+tautau_dune = RajatJaPlotti(tau,tau,m1range,s23range,deltarange,eps,nh,anti);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
 
 % Beautifying the plots (showLegend, yMin, yMax, fontSize)
@@ -116,15 +117,15 @@ fprintf('#################\n# NON-UNITARITY #\n#################\n');
 
 % figure;
 subplot(2,2,2);
-ee_nonunit = RajatJaPlotti(e,e,m1range,s23range,deltarange,eps_nonunit,nh);
+ee_nonunit = RajatJaPlotti(e,e,m1range,s23range,deltarange,eps_nonunit,nh,anti);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1; hold on;
-emu_nonunit = RajatJaPlotti(e,mu,m1range,s23range,deltarange,eps_nonunit,nh);
+emu_nonunit = RajatJaPlotti(e,mu,m1range,s23range,deltarange,eps_nonunit,nh,anti);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-etau_nonunit = RajatJaPlotti(e,tau,m1range,s23range,deltarange,eps_nonunit,nh);
+etau_nonunit = RajatJaPlotti(e,tau,m1range,s23range,deltarange,eps_nonunit,nh,anti);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-mutau_nonunit = RajatJaPlotti(mu,tau,m1range,s23range,deltarange,eps_nonunit,nh);
+mutau_nonunit = RajatJaPlotti(mu,tau,m1range,s23range,deltarange,eps_nonunit,nh,anti);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-tautau_nonunit = RajatJaPlotti(tau,tau,m1range,s23range,deltarange,eps_nonunit,nh);
+tautau_nonunit = RajatJaPlotti(tau,tau,m1range,s23range,deltarange,eps_nonunit,nh,anti);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
 
 Beautify(true,y_lower,y_upper,fs);
@@ -138,15 +139,15 @@ minValuesNonunit = GetValuesByIndex(minIndexValues, ee_nonunit, emu_nonunit, eta
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 fprintf('##################\n# CURRENT LIMITS #\n##################\n');
 subplot(2,2,3);
-ee_exp = RajatJaPlotti(e,e,m1range,s23range,deltarange,eps_exp,nh);
+ee_exp = RajatJaPlotti(e,e,m1range,s23range,deltarange,eps_exp,nh,anti);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1; hold on;
-emu_exp = RajatJaPlotti(e,mu,m1range,s23range,deltarange,eps_exp,nh);
+emu_exp = RajatJaPlotti(e,mu,m1range,s23range,deltarange,eps_exp,nh,anti);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-etau_exp = RajatJaPlotti(e,tau,m1range,s23range,deltarange,eps_exp,nh);
+etau_exp = RajatJaPlotti(e,tau,m1range,s23range,deltarange,eps_exp,nh,anti);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-mutau_exp = RajatJaPlotti(mu,tau,m1range,s23range,deltarange,eps_exp,nh);
+mutau_exp = RajatJaPlotti(mu,tau,m1range,s23range,deltarange,eps_exp,nh,anti);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
-tautau_exp = RajatJaPlotti(tau,tau,m1range,s23range,deltarange,eps_exp,nh);
+tautau_exp = RajatJaPlotti(tau,tau,m1range,s23range,deltarange,eps_exp,nh,anti);
 fprintf('%d/%d (%.2f seconds elapsed)\n',counter, stages, cputime-t); counter = counter+1;
 
 Beautify(true,y_lower,y_upper,fs);
