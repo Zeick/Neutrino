@@ -3,9 +3,10 @@ clear;
 CMS = load('CMSvalues.mat');
 CMS = CMS.values;
 logscale = false;
+anti=false;
 nh=false; m1=0; fs = 20; k = 0;
-%mDelta = 0.75e12; % 750 GeV
-mDelta = 2.0e12; % 2 TeV
+mDelta = 0.75e12; % 750 GeV
+%mDelta = 2.0e12; % 2 TeV
 m1range = 0:0.1:0.2;
 
 % Linear scale
@@ -62,7 +63,7 @@ lambdaLimits = zeros(2,length(m1range));
 % Loop over lightest neutrino mass
 for m1 = m1range
     % Construct mass matrix
-    mnu2 = GenerateMassMatrix(U, m1, m21, m31, nh);
+    mnu2 = GenerateMassMatrix(U, m1, m21, m31, nh, anti);
     mnu2dag = ctranspose(mnu2);
     if (alpha == e)
         mnu2(alpha, beta) = mnu2(alpha, beta) + A*eps(alpha, beta);
@@ -102,7 +103,7 @@ plot(lambdaRange, values(1,:),'-k','LineWidth',2);
 hold on;
 plot(lambdaRange, values(2,:),'--k','LineWidth',2);
 plot(lambdaRange, values(3,:),':k','LineWidth',2);
-plot(lambdaRange, 0.095*ones(1,length(lambdaRange)),'-.k','LineWidth',1);
+%plot(lambdaRange, 0.095*ones(1,length(lambdaRange)),'-.k','LineWidth',1);
 
 set(gca,'FontSize',fs);
 %ylim([-1 1]); % log-eps
@@ -137,7 +138,7 @@ lambdaRange = [(2*lambdaRange(1) - lambdaRange(2)) lambdaRange];
 X=[lambdaRange,fliplr(lambdaRange)];
 Y=[y1,y1(1),yupper(1),fliplr(yupper)];
 h=fill(X,Y,'b');
-set(h,'facealpha',.2)
+set(h,'facealpha',.2);
 xlim([min(lambdaRange) max(lambdaRange)]);
 
 Y=[y2,y2(1),y1(1),fliplr(y1)];
@@ -145,7 +146,7 @@ h=fill(X,Y,'g');
 set(h,'facealpha',.2)
 text(1.2*xm,3.2,'Excluded','FontSize',fs)
 text(1.2*xm,2.0,'DUNE','FontSize',fs)
-text(2.9*xm,0.095+0.15,'$Y=\sqrt{4\pi}$','Interpreter','latex','FontSize',fs);
+%text(2.9*xm,0.095+0.15,'$Y=\sqrt{4\pi}$','Interpreter','latex','FontSize',fs);
 
 % CMS Exclusion
 %area(lambdaRange,[values(1,1) values(1,:)],'FaceColor',[0.7 0.7 0.7]); % Grey fill
