@@ -14,7 +14,8 @@ fs = 20;            % Font size of title and axes
 nh = false;         % Normal hierarchy (false -> inverse hierarchy)
 s23Fix = false;     % If true, set best-fit value for s23
 deltaFix = false;   % likewise for deltaCP
-anti = true;        % True for antineutrino beam, false for neutrino beam
+anti = false;        % True for antineutrino beam, false for neutrino beam
+matter = true;      % True for matter potential, false for vacuum
 
 % Connect lepton flavour to integers
 e = 1;              % Use exp(1) for Neper's number if necessary
@@ -84,11 +85,13 @@ if deltaFix
 else
     deltarange = 0:0.04:6.28;
 end
-para{1} = m1range;
-para{2} = s23range;
-para{3} = deltarange;
-para{4} = nh;
-para{5} = anti;
+% Definition of the parameter vector
+para{1} = m1range;      % Lightest neutrino mass
+para{2} = s23range;     % Octant angle
+para{3} = deltarange;   % CP violating angle
+para{4} = nh;           % Hierarchy
+para{5} = anti;         % Neutrino/antineutrino choice
+para{6} = matter;       % Matter potential choice
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PLOT FOR LBNO/DUNE DATA %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%

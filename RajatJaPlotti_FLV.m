@@ -11,7 +11,7 @@ Gf = 1.1664e-5*1.0e-18; % Fermi constant in eV^-2
 Enu = 2.0e9; 		    % Neutrino energy in eV
 A = 2*sqrt(2)*Gf*Enu*ne;% Matter density potential of electrons
 
-m21 = 7.5e-5;           
+m21 = 7.5e-5;
 s12 = sqrt(0.306);
 fprintf('NSI parameter: eps^(%d%d)_(%d%d). ', alpha, beta,sigma,rho);
 if(nh) % Normal hierarchy

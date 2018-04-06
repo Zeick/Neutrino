@@ -37,9 +37,9 @@ exp_ih2 = exp_ih2-12; dune_ih2 = dune_ih2-12; nonunit_ih2 = nonunit_ih2-12;
 j=101; % 1 -> 0 eV, 51 -> 0.1 eV, 101 -> 0.2 eV 
 figure;
 m1 = (j-1)*0.002;
-dune1_lin = 10.^dune_nh(j);            dune2_lin = 10.^dune_nh2(j);
-exp1_lin = 10.^exp_nh(j);              exp2_lin = 10.^exp_nh2(j);
-nonunit1_lin = 10.^nonunit_nh(j);      nonunit2_lin = 10.^nonunit_nh2(j);
+dune1_lin = 10.^dune_nh(j);            dune2_lin = 10.^dune_ih2(j);
+exp1_lin = 10.^exp_nh(j);              exp2_lin = 10.^exp_ih2(j);
+nonunit1_lin = 10.^nonunit_nh(j);      nonunit2_lin = 10.^nonunit_ih2(j);
 mDelta = 0:0.1:10; % TeV                
 dune1_lin = mDelta/dune1_lin;          dune2_lin = mDelta/dune2_lin;
 exp1_lin = mDelta/exp1_lin;            exp2_lin = mDelta/exp2_lin;
@@ -48,18 +48,18 @@ hold on;
 ylim([0 3]);
 set(gca,'Color','c','FontSize',fs); % Background color of the plot
 set(gcf,'color','w'); % Background color of the plot window
-area(mDelta,nonunit1_lin,'FaceColor','g');
-area(mDelta,dune1_lin,'FaceColor', 'y');
-area(mDelta,exp1_lin,'FaceColor', 'w'); % Grey = [0.5 0.5 0.5]
-plot(mDelta, dune1_lin,'-k');
-plot(mDelta, dune2_lin,'--k');
-plot(mDelta, exp1_lin,'-k');
-plot(mDelta, exp2_lin,'--k');
-plot(mDelta, nonunit1_lin,'-k');
-plot(mDelta, nonunit2_lin,'--k');
+area(mDelta,nonunit2_lin,'FaceColor','g');
+area(mDelta,dune2_lin,'FaceColor', 'y');
+area(mDelta,exp2_lin,'FaceColor', 'w'); % Grey = [0.5 0.5 0.5]
+%plot(mDelta, dune1_lin,'-k');
+plot(mDelta, dune2_lin,'-k');
+%plot(mDelta, exp1_lin,'-k');
+plot(mDelta, exp2_lin,'-k');
+%plot(mDelta, nonunit1_lin,'-k');
+plot(mDelta, nonunit2_lin,'-k');
 xlabel('M_{\Delta} (TeV)','FontSize',fs);
 ylabel('\lambda_{\phi} (eV)','FontSize',fs);
-text(8,0.5,'NH','FontSize',fs+20);
+text(8,0.5,'IH','FontSize',fs+20);
 %title(['m_1 = ' num2str(m1) ' eV'],'FontSize',fs);
 %legend('{\fontsize{15}Experimental limit}', '{\fontsize{15}DUNE coverage}','{\fontsize{15}Non-unitary limit}','Location','NorthEast');
 hold off;

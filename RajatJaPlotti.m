@@ -8,7 +8,7 @@ function values = RajatJaPlotti(alpha,beta,eps,para)
 % Electron number density of Earth: 10^-30 m^-3 in natural units
 % Note: 1/GeV = 0.197e-15 m and 1 m = 5076142.13198 eV
 m1range = para{1};  s23range = para{2}; deltarange = para{3};
-nh = para{4};       anti = para{5};
+nh = para{4};       anti = para{5};     matter = para{6};
 ne = 7.645e-18*1.0e27;  % In eV^3
 if anti % Potential has different sign for antineutrinos
     sign = -1;
@@ -17,8 +17,11 @@ else
 end
 Gf = 1.1664e-5*1.0e-18; % Fermi constant in eV^-2
 Enu = 2.0e9; 		    % Neutrino energy in eV
-A = 2*sqrt(2)*Gf*Enu*ne;% Matter density potential of electrons
-
+if matter
+    A = 2*sqrt(2)*Gf*Enu*ne;% Matter density potential of electrons
+else
+    A = 0;
+end
 e = 1; mu = 2;
 m21 = 7.5e-5;           
 s12 = sqrt(0.306);
